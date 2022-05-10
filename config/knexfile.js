@@ -10,6 +10,7 @@ module.exports = {
 	},
 	pool: {
 		min: 2,
-		max: parseInt(process.env.DB_MAX_POOL, 10)
+		max: parseInt(process.env.DB_MAX_POOL, 10),
+		propagateCreateError: false
 	}
 };
