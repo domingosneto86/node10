@@ -16,8 +16,9 @@ module.exports = app => {
         if (!app.utils.error.check400(result, res)) {
             res.status(200).send(result) 
         }
-     } catch (err) { 
-         app.utils.error.check400(err, res)
+     } catch (err) {
+        console.log('erro /auth/signin', err);
+        app.utils.error.check400(err, res);
      } 
    })
    
