@@ -1,4 +1,3 @@
-require('dotenv').config();
 const app = require('./app.js');
 
 var serverApp = app.listen(process.env.PORT || 8081, '0.0.0.0',() => {
