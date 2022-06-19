@@ -38,7 +38,7 @@ module.exports = app => {
         }
     }
 
-    const getVersion = async (user) => {
+    const getVersion = async (id) => {
         try{
             const data = await app.db(app.constants.db.TABLE.DATA)
                 .select({
@@ -53,12 +53,12 @@ module.exports = app => {
                     path_media: 'path_media', 
                     path_safra: 'path_safra'
                 })
-                .where('idcliente', user.clientId)
+                .where('idcliente', id)
                 .andWhere('idstatus', app.constants.base.STATUS.ACTIVE)
                 .orderBy('versao', 'desc')
                 .first()
             if(data){
-                data.maps = await getMapFiles(user.clientId)
+                data.maps = await getMapFiles(id)
                 return data
             }else{
                 return {

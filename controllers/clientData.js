@@ -7,7 +7,10 @@ module.exports = app => {
   app.post("/data/version", app.middlewares.passport.auth('auth-login'),
     async (req, res) => {
       try {
-          const result = await app.models.clientData.getVersion(req.user)
+          // console.log("req.body");
+          // console.log(req.params);
+          // console.log(req.query);
+          const result = await app.models.clientData.getVersion(req.query.clientId)
           if (!app.utils.error.check400(result, res)) {
               res.status(200).send(result) 
           }

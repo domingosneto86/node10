@@ -45,7 +45,25 @@ module.exports = app => {
           
           const isMatch = await app.utils.crypt.crypt(password) === user.password
 
-          if (isMatch) {                    
+          if (isMatch) {
+            // console.log(app.constants.db);
+              var usinas = app.db
+                .select({
+                    name: app.constants.db.TABLE.CLIENT + '.nome',
+                    id: app.constants.db.TABLE.CLIENT + '.idcliente',
+                    lng: app.constants.db.TABLE.CLIENT + '.longitude',
+                    lat: app.constants.db.TABLE.CLIENT + '.latitude'
+                })
+                .from(app.constants.db.TABLE.USER_CLIENT)
+                .innerJoin(app.constants.db.TABLE.CLIENT,
+                  app.constants.db.TABLE.USER_CLIENT +'.clienteId', app.constants.db.TABLE.CLIENT + '.idcliente')
+                .where(app.constants.db.TABLE.USER_CLIENT + '.usuarioId', user.userId)
+                .orderBy(app.constants.db.TABLE.CLIENT + '.nome')
+              
+              // console.log(user.userId);
+              // console.log(usinas.toQuery());
+              usinas = await usinas;
+              // console.log(usinas);
               const token = jwt.sign({ _id: user.userId.toString() }, process.env.JWT_AUTH_SECRET)
               
               await app.db(app.constants.db.TABLE.USER).update({ 
@@ -60,7 +78,8 @@ module.exports = app => {
                   tknaccess: token,
                   clientName: user.clientName,
                   lat: user.lat,
-                  log: user.log                  
+                  lng: user.log,
+                  usinas              
               }
           } else {
             return {
